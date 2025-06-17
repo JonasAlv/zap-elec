@@ -31,7 +31,7 @@
       "maintainer": "JonasAlv",
       "synopsis": "Simple WhatsApp Web wrapper",
       "description": "A minimal Electron wrapper for WhatsApp Web.",
-      "icon": "assets/icon.png"
+      "icon": "build/icon.png"
     },
     "directories": {
       "buildResources": "build"
