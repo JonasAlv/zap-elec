@@ -1,0 +1,35 @@
+{
+  "name": "zap-elec",
+  "version": "1.0.0",
+  "description": "Simple web wrapper for whatsapp web",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "author": "JonasAlv",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^36.4.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.jonasalv.zap-elec",
+    "productName": "zap-elec",
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm"
+      ],
+      "category": "Network",
+      "maintainer": "JonasAlv",
+      "synopsis": "Simple WhatsApp Web wrapper",
+      "description": "A minimal Electron wrapper for WhatsApp Web.",
+      "icon": "assets/icon.png"
+    },
+    "directories": {
+      "buildResources": "build"
+    }
+  }
+}
