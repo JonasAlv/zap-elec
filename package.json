@@ -8,6 +8,11 @@
     "build": "electron-builder"
   },
   "author": "JonasAlv",
+  "homepage": "https://github.com/JonasAlv/zap-elec",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonasAlv/zap-elec.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "electron": "^36.4.0",
