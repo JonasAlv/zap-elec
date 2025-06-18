@@ -1,14 +1,19 @@
 const { app, BrowserWindow, shell } = require('electron');
 const path = require('path');
+const { URL } = require('url');
 const createTray = require('./tray');
+
+app.disableHardwareAcceleration();
+app.isQuitting = false;
 
 let mainWindow;
 
 function createWindow() {
-  mainWindow = new BrowserWindow({    
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
     icon: path.join(__dirname, '..', 'assets', 'icon.png'),
+    show: false,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -19,6 +24,9 @@ function createWindow() {
   mainWindow.loadURL('https://web.whatsapp.com/', { userAgent });
   mainWindow.setMenuBarVisibility(false);
 
+  mainWindow.once('ready-to-show', () => {
+    mainWindow.show();
+  });
 
   mainWindow.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
@@ -26,8 +34,10 @@ function createWindow() {
   });
 
   mainWindow.webContents.on('will-navigate', (event, url) => {
-    const currentUrl = mainWindow.webContents.getURL();
-    if (!url.startsWith(currentUrl)) {
+    const currentOrigin = new URL(mainWindow.webContents.getURL()).origin;
+    const targetOrigin = new URL(url).origin;
+
+    if (currentOrigin !== targetOrigin) {
       event.preventDefault();
       shell.openExternal(url);
     }
@@ -40,14 +50,23 @@ function createWindow() {
     }
   });
 
-  createTray(mainWindow);
+  const tray = createTray(mainWindow);
+
+  mainWindow.on('show', () => {
+    tray.setToolTip('zap-elec - Window Visible');
+  });
+
+  mainWindow.on('hide', () => {
+    tray.setToolTip('zap-elec - Window Hidden');
+  });
 }
 
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
-  // Do not quit on close (keeps tray alive)
-  if (process.platform !== 'darwin') {}
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
 app.on('activate', () => {
