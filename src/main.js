@@ -7,6 +7,7 @@ app.disableHardwareAcceleration();
 app.isQuitting = false;
 
 let mainWindow;
+let tray;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -18,6 +19,13 @@ function createWindow() {
       nodeIntegration: false,
       contextIsolation: true,
     }
+  });
+
+  const systemLocale = app.getLocale();
+
+  mainWindow.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
+    details.requestHeaders['Accept-Language'] = systemLocale;
+    callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 
   const userAgent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36';
@@ -50,7 +58,7 @@ function createWindow() {
     }
   });
 
-  const tray = createTray(mainWindow);
+  tray = createTray(mainWindow);
 
   mainWindow.on('show', () => {
     tray.setToolTip('zap-elec - Window Visible');
@@ -64,9 +72,7 @@ function createWindow() {
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('activate', () => {

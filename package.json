@@ -19,7 +19,7 @@
     "electron-builder": "^26.0.12"
   },
   "build": {
-    "appId": "com.jonasalv.zap-elec",
+    "appId": "com.zap-elec.app",
     "productName": "zap-elec",
     "directories": {
       "buildResources": "build"
