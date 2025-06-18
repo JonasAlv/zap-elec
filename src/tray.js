@@ -12,7 +12,7 @@ function createTray(mainWindow) {
     throw new Error('Main window is required to create tray');
   }
 
-  const iconPath = path.join(__dirname, '..', 'assets', 'icon.png');
+  const iconPath = path.join(__dirname, '..', 'assets/icons', 'icon.png');
   tray = new Tray(iconPath);
 
   const contextMenu = Menu.buildFromTemplate([
