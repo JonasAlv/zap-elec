@@ -1,40 +1,49 @@
 {
-  "name": "zap-elec",
-  "version": "1.0.0",
-  "description": "Simple web wrapper for WhatsApp Web",
-  "main": "src/main.js",
-  "scripts": {
-    "start": "electron .",
-    "build": "electron-builder"
-  },
-  "author": "JonasAlv",
-  "homepage": "https://github.com/JonasAlv/zap-elec",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/JonasAlv/zap-elec.git"
-  },
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^36.4.0",
-    "electron-builder": "^26.0.12"
-  },
-  "build": {
-    "appId": "com.zap-elec.app",
-    "productName": "zap-elec",
-    "directories": {
-      "buildResources": "build"
+    "name": "zap-elec",
+    "version": "1.0.0",
+    "description": "Simple web wrapper for WhatsApp Web",
+    "main": "dist/main.js",
+    "scripts": {
+        "clean": "rm -rf dist/*",
+        "tsc": "tsc",
+        "start": "yarn tsc && electron .",
+        "build": "yarn tsc && electron-builder"
     },
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb",
-        "pacman"
-      ],
-      "category": "Network",
-      "maintainer": "JonasAlv",
-      "synopsis": "Simple WhatsApp Web wrapper",
-      "description": "A minimal Electron wrapper for WhatsApp Web.",
-      "icon": "build/icons"
+    "author": "JonasAlv",
+    "homepage": "https://github.com/JonasAlv/zap-elec",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/JonasAlv/zap-elec.git"
+    },
+    "license": "MIT",
+    "devDependencies": {
+        "@types/electron": "^1",
+        "@types/node": "^24",
+        "electron": "^36",
+        "electron-builder": "^26",
+        "typescript": "^5"
+    },
+    "build": {
+        "appId": "com.zap-elec.app",
+        "productName": "zap-elec",
+        "directories": {
+            "buildResources": "build"
+        },
+        "files": [
+            "dist/**/*",
+            "node_modules/**/*",
+            "package.json"
+        ],
+        "linux": {
+            "target": [
+                "AppImage",
+                "deb"
+            ],
+            "category": "Network",
+            "maintainer": "JonasAlv",
+            "synopsis": "Simple WhatsApp Web wrapper",
+            "description": "A minimal Electron wrapper for WhatsApp Web.",
+            "icon": "build/icons"
+        }
     }
-  }
 }
