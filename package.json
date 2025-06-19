@@ -12,10 +12,10 @@
   },
  "scripts": {
   "clean": "rimraf dist",
-  "tsc": "tsc --incremental",
-  "start": "tsc --incremental && electron .",
-  "build": "yarn clean && tsc && electron-builder",
-  "build:dir": "tsc --incremental && electron-builder --dir"
+  "tsc": "tsc",
+  "start": "tsc  && electron .",
+  "build": "yarn tsc && electron-builder",
+  "build:dir": "tsc && electron-builder --dir"
 }
 
 
@@ -34,15 +34,16 @@
     "compression": "maximum",
     "asar": true,
     "files": [
-  "dist/",
-  "package.json",
-  "!**/*.ts",
-  "!**/*.map",
-  "!**/tests/**",
-  "!node_modules/**/*",
-  "!.env",
-  "!*.log"
-],
+      "dist/",
+      "package.json",
+      "!**/*.ts",
+      "!**/*.map",
+      "!**/tests/**",
+      "!*.log",
+      "!*.env"
+    ],
+    "npmRebuild": false,
+    "buildDependenciesFromSource": false,
     "directories": {
       "buildResources": "build"
     },
