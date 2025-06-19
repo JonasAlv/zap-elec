@@ -10,17 +10,14 @@
     "type": "git",
     "url": "https://github.com/JonasAlv/zap-elec.git"
   },
- "scripts": {
-  "clean": "rimraf dist",
-  "tsc": "tsc",
-  "start": "tsc  && electron .",
-  "build": "yarn tsc && electron-builder",
-  "build:dir": "tsc && electron-builder --dir"
-}
-
-
-
-,
+  "scripts": {
+    "clean": "rimraf dist",
+    "tsc": "tsc",
+    "prestart": "yarn tsc",
+    "start": "electron dist/main.js",
+    "prebuild": " yarn tsc",
+    "build": "electron-builder"
+  },
   "devDependencies": {
     "@types/node": "^24",
     "electron": "^36",
@@ -31,39 +28,25 @@
   "build": {
     "appId": "com.zap-elec.app",
     "productName": "zap-elec",
-    "compression": "maximum",
     "asar": true,
+    "asarUnpack": true,
+    "compression": "maximum",
     "files": [
-      "dist/",
+      "dist",
       "package.json",
-      "!**/*.ts",
-      "!**/*.map",
-      "!**/tests/**",
-      "!*.log",
-      "!*.env"
+      "assets"
     ],
     "npmRebuild": false,
     "buildDependenciesFromSource": false,
-    "directories": {
-      "buildResources": "build"
-    },
     "linux": {
       "target": [
-        "AppImage",
+    
         "deb"
       ],
       "icon": "build/icons",
-      "category": "Network",
+      "category": "Internet",
       "maintainer": "JonasAlv",
-      "synopsis": "Simple WhatsApp Web wrapper made with Typescript and Electron",
       "description": "A minimal Electron wrapper for WhatsApp Web."
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "JonasAlv",
-        "repo": "zap-elec"
-      }
-    ]
+    }
   }
 }
