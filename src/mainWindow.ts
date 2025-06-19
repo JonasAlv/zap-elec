@@ -1,9 +1,9 @@
-// src/mainWindow.ts
-import { app, BrowserWindow, shell, Tray } from 'electron';
+import { app, BrowserWindow, shell } from 'electron';
 import * as path from 'path';
 import { createTray } from './tray';
 import { URL } from 'url';
 import { setMainWindow, setTray } from './windowManager';
+
 
 export function initializeMainWindow() {
   const win = new BrowserWindow({
