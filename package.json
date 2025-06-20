@@ -14,7 +14,7 @@
     "clean": "rimraf dist",
     "tsc": "tsc",
     "prestart": "yarn tsc",
-    "start": "electron dist/main.js",
+    "start": "electron .",
     "prebuild": " yarn tsc",
     "build": "electron-builder"
   },

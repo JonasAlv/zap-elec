@@ -3,12 +3,14 @@ import * as path from 'path';
 import { URL } from 'url';
 import { createTray } from './tray';
 
-app.disableHardwareAcceleration();
+//app.disableHardwareAcceleration();
+//app.commandLine.appendSwitch('enable-low-end-device-mode');
+app.commandLine.appendSwitch('enable-features', 'UseOzonePlatform,WaylandVsync');
+//app.commandLine.appendSwitch('enable-features', 'UseOzonePlatform');
 app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('ignore-gpu-blacklist');
 console.log(app.getGPUFeatureStatus());
 
-//app.commandLine.appendSwitch('enable-low-end-device-mode');
 
 async function createMainWindow(): Promise<BrowserWindow> {
   const window = new BrowserWindow({
@@ -28,7 +30,7 @@ async function createMainWindow(): Promise<BrowserWindow> {
   });
 
   const userAgent =
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36';
+    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0';
 
   await window.loadURL('https://web.whatsapp.com/', { userAgent });
   return window;
