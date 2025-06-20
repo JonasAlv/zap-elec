@@ -40,7 +40,6 @@
     "buildDependenciesFromSource": false,
     "linux": {
       "target": [
-    
         "deb"
       ],
       "icon": "build/icons",
