@@ -41,7 +41,8 @@
     "linux": {
       "target": [
     
-        "deb"
+        "deb",
+        "appimage"
       ],
       "icon": "build/icons",
       "category": "Internet",
