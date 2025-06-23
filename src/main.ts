@@ -3,12 +3,12 @@ import * as path from 'path';
 import { URL } from 'url';
 import { createTray } from './tray';
 
-app.disableHardwareAcceleration();
+//app.disableHardwareAcceleration();
 // app.commandLine.appendSwitch('enable-low-end-device-mode');
 
 app.commandLine.appendSwitch('gtk-version', '3');
-app.commandLine.appendSwitch('disable-gpu');
-app.commandLine.appendSwitch('disable-software-rasterizer');
+//app.commandLine.appendSwitch('disable-gpu');
+//app.commandLine.appendSwitch('disable-software-rasterizer');
 
 async function createMainWindow(): Promise<BrowserWindow> {
   const basePath = app.isPackaged
