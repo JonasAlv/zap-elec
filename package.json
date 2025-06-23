@@ -1,58 +1,54 @@
 {
   "name": "zap-elec",
   "version": "1.0.0",
-  "description": "Simple web wrapper for WhatsApp Web",
+  "description": "Simple web wrapper made with typescript and electron",
   "main": "dist/main.js",
-  "author": "JonasAlv",
-  "license": "MIT",
-  "homepage": "https://github.com/JonasAlv/zap-elec",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/JonasAlv/zap-elec.git"
+  "scripts": {
+    "start": "yarn tsc && electron .",
+    "clean": "rm -r dist && rm -r release",
+    "tsc": "tsc",
+    "build": "yarn run tsc && electron-builder",
+    "docker": "docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
+    "chown": "sudo chown -R me:me dist release"  
   },
-"scripts": {
-  "clean": "rimraf dist",
-  "tsc": "tsc",
-  "prestart": "npm run tsc",
-  "start": "electron .",
-  "prebuild": "npm run tsc",
-  "build": "electron-builder"
-},
-
+  "author": {
+    "name": "Jonas Alv",
+    "email": "jonas001san@gmail.com"
+  },
+  "license": "MIT",
   "devDependencies": {
-    "@types/node": "^24",
     "electron": "^36.5.0",
-    "electron-builder": "^26",
-    "rimraf": "^6",
-    "typescript": "^5"
+    "electron-builder": "^26.0.12",
+    "typescript": "^5.8.3"
   },
   "build": {
-    "appId": "com.zap-elec.app",
-    "productName": "zap-elec",
     "asar": true,
-    "asarUnpack": true,
-    "compression": "maximum",
-    "files": [
-      "dist",
-      "package.json",
-      "assets"
-    ],
-    "npmRebuild": false,
-    "buildDependenciesFromSource": false,
-    "linux": {
-      "target": [
-        "deb",
-        "rpm"
-      ],
-      "icon": "build/icons",
-      "category": "Internet",
-      "maintainer": "JonasAlv",
-      "description": "A minimal Electron wrapper for WhatsApp Web."
+  "appId": "com.zap-elec.app",
+  "productName": "zap-elec",
+"files": [
+  "dist",
+  "!node_modules",
+  "assets"
+],
+ "extraResources": [
+    {
+      "from": "assets/icons",
+      "to": "assets/icons"
     }
+  ],
+  "directories": {
+    "output": "release"
   },
-    "ignoredBuiltDependencies": [
-      "electron",
-      "electron-winstaller"
-    ]
-}
+  "linux": {
+    "category": "Network",
+    "target": ["rpm", "deb"],
+    "icon": "assets/icons",
+    "maintainer": "Jonas Alv <jonas001san@gmail.com>",
+    "synopsis": "Electron web wrapper"
+ 
+  },
 
+  "publish": null
+
+}
+}

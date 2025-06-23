@@ -1,26 +1,31 @@
-import { app, BrowserWindow, shell } from 'electron';
+import { app, BrowserWindow, shell, nativeImage } from 'electron';
 import * as path from 'path';
 import { URL } from 'url';
 import { createTray } from './tray';
 
-//app.disableHardwareAcceleration();
-//app.commandLine.appendSwitch('enable-low-end-device-mode');
-app.commandLine.appendSwitch('enable-features', 'UseOzonePlatform,WaylandVsync');
-app.commandLine.appendSwitch('enable-features', 'UseOzonePlatform');
-app.commandLine.appendSwitch('gtk-version', '3');
-app.commandLine.appendSwitch('enable-gpu-rasterization');
-app.commandLine.appendSwitch('ignore-gpu-blacklist');
-console.log(app.getGPUFeatureStatus());
+app.disableHardwareAcceleration();
+// app.commandLine.appendSwitch('enable-low-end-device-mode');
 
+app.commandLine.appendSwitch('gtk-version', '3');
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-software-rasterizer');
 
 async function createMainWindow(): Promise<BrowserWindow> {
+  const basePath = app.isPackaged
+    ? process.resourcesPath
+    : path.resolve(__dirname, '../../');
+
+  const iconPath = path.join(basePath, 'assets/icons/icon.png');
+
+  const icon = nativeImage.createFromPath(iconPath);
+
   const window = new BrowserWindow({
     width: 1200,
     height: 800,
-    icon: path.join(__dirname, '..', 'assets/icons', 'icon.png'),
+    icon,
     show: true,
     autoHideMenuBar: true,
-      backgroundColor: '#ffffff',
+    backgroundColor: '#ffffff',
     webPreferences: {
       contextIsolation: true,
       sandbox: true,
@@ -85,11 +90,5 @@ function setupLifecycle() {
   });
 }
 
-app.whenReady()
-  .then(initializeApp)
-  .catch((err) => {
-    console.error('Failed to initialize app:', err);
-    app.quit();
-  });
-
+app.whenReady().then(initializeApp);
 setupLifecycle();
