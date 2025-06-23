@@ -10,17 +10,18 @@
     "type": "git",
     "url": "https://github.com/JonasAlv/zap-elec.git"
   },
-  "scripts": {
-    "clean": "rimraf dist",
-    "tsc": "tsc",
-    "prestart": "yarn tsc",
-    "start": "electron .",
-    "prebuild": " yarn tsc",
-    "build": "electron-builder"
-  },
+"scripts": {
+  "clean": "rimraf dist",
+  "tsc": "tsc",
+  "prestart": "npm run tsc",
+  "start": "electron .",
+  "prebuild": "npm run tsc",
+  "build": "electron-builder"
+},
+
   "devDependencies": {
     "@types/node": "^24",
-    "electron": "^36",
+    "electron": "^36.5.0",
     "electron-builder": "^26",
     "rimraf": "^6",
     "typescript": "^5"
@@ -40,12 +41,18 @@
     "buildDependenciesFromSource": false,
     "linux": {
       "target": [
-        "deb"
+        "deb",
+        "rpm"
       ],
       "icon": "build/icons",
       "category": "Internet",
       "maintainer": "JonasAlv",
       "description": "A minimal Electron wrapper for WhatsApp Web."
     }
-  }
+  },
+    "ignoredBuiltDependencies": [
+      "electron",
+      "electron-winstaller"
+    ]
 }
+
