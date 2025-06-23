@@ -8,6 +8,7 @@
     "clean": "rm -r dist && rm -r release",
     "tsc": "tsc",
     "build": "yarn run tsc && electron-builder",
+    "docker-pull": "docker pull electronuserland/builder",
     "docker": "docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
     "chown": "sudo chown -R me:me dist release"  
   },
