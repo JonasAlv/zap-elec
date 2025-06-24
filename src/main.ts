@@ -1,58 +1,61 @@
-import { app, BrowserWindow, shell, nativeImage } from 'electron';
-import * as path from 'path';
+import { app, BrowserWindow, shell, nativeImage, NativeImage } from 'electron';
+import path from 'path';
+import fs from 'fs';
 import { URL } from 'url';
 import { createTray } from './tray';
 
-// custom chromium commands
-//app.disableHardwareAcceleration();
-//app.commandLine.appendSwitch('enable-low-end-device-mode');
-//app.commandLine.appendSwitch('disable-gpu');
-//app.commandLine.appendSwitch('disable-software-rasterizer');
+// Chromium performance flags
 app.commandLine.appendSwitch('enable-gpu');
 app.commandLine.appendSwitch('ignore-gpu-blacklist');
-//app.commandLine.appendSwitch('use-gl', 'desktop'); // Use native OpenGL
-// linux
-//due to error on gnome: using gtk4 and gtk3 at the same time
-app.commandLine.appendSwitch('gtk-version', '3'); 
-
-//app.commandLine.appendSwitch('ozone-platform', 'wayland');
-//app.commandLine.appendSwitch('enable-features', 'UseOzonePlatform,WaylandWindowDecorations');
-
+app.commandLine.appendSwitch('gtk-version', '3'); // Fix Gnome GTK3/4 conflict
+app.commandLine.appendSwitch('disk-cache-size', '104857600'); // 100MB cache
 
 async function createMainWindow(): Promise<BrowserWindow> {
-  const basePath = app.isPackaged
-    ? process.resourcesPath
-    : path.resolve(__dirname, '../../');
-
+  const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
   const iconPath = path.join(basePath, 'assets/icons/icon.png');
 
-  const icon = nativeImage.createFromPath(iconPath);
+  let icon: NativeImage | undefined;
+  if (fs.existsSync(iconPath)) {
+    icon = nativeImage.createFromPath(iconPath);
+    if (icon.isEmpty()) {
+      console.warn(`Icon at ${iconPath} is empty.`);
+      icon = undefined;
+    }
+  } else {
+    console.warn(`Icon not found at ${iconPath}`);
+  }
 
   const window = new BrowserWindow({
     width: 1200,
     height: 800,
     icon,
-    show: true,
+    show: false, 
     autoHideMenuBar: true,
     backgroundColor: '#ffffff',
     webPreferences: {
       contextIsolation: true,
       sandbox: true,
       nodeIntegration: false,
-      enableWebSQL: false,
       spellcheck: false,
     },
   });
 
+  window.once('ready-to-show', () => {
+    window.show();
+  });
+
   const userAgent =
-  'Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0';
-  
-  await window.loadURL('https://web.whatsapp.com/', { userAgent });
+    'Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0';
+
+  window.webContents.session.setUserAgent(userAgent);
+
+  await window.loadURL('https://web.whatsapp.com/');
   return window;
 }
 
 function setupWebSecurity(window: BrowserWindow) {
   const locale = app.getLocale();
+
   window.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['Accept-Language'] = locale;
     callback({ cancel: false, requestHeaders: details.requestHeaders });
@@ -68,6 +71,7 @@ function setupExternalNavigation(window: BrowserWindow) {
   window.webContents.on('will-navigate', (event, url) => {
     const current = new URL(window.webContents.getURL()).origin;
     const target = new URL(url).origin;
+
     if (current !== target) {
       event.preventDefault();
       shell.openExternal(url);
@@ -75,18 +79,11 @@ function setupExternalNavigation(window: BrowserWindow) {
   });
 }
 
-function attachTrayBehavior(window: BrowserWindow, tray: Electron.Tray) {
-  window.on('show', () => tray.setToolTip('Visible'));
-  window.on('hide', () => tray.setToolTip('Hidden'));
-}
-
 async function initializeApp() {
   const mainWindow = await createMainWindow();
   setupWebSecurity(mainWindow);
   setupExternalNavigation(mainWindow);
-
-  const tray = createTray(mainWindow);
-  attachTrayBehavior(mainWindow, tray);
+  createTray(mainWindow);
 }
 
 function setupLifecycle() {
