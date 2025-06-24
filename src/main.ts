@@ -10,6 +10,9 @@ app.commandLine.appendSwitch('ignore-gpu-blacklist');
 app.commandLine.appendSwitch('gtk-version', '3'); // Fix Gnome GTK3/4 conflict
 app.commandLine.appendSwitch('disk-cache-size', '104857600'); // 100MB cache
 
+const userAgent =
+  'Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0';
+
 async function createMainWindow(): Promise<BrowserWindow> {
   const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
   const iconPath = path.join(basePath, 'assets/icons/icon.png');
@@ -29,7 +32,7 @@ async function createMainWindow(): Promise<BrowserWindow> {
     width: 1200,
     height: 800,
     icon,
-    show: false, 
+    show: false,
     autoHideMenuBar: true,
     backgroundColor: '#ffffff',
     webPreferences: {
@@ -44,12 +47,8 @@ async function createMainWindow(): Promise<BrowserWindow> {
     window.show();
   });
 
-  const userAgent =
-    'Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0';
+  await window.loadURL('https://web.whatsapp.com/', { userAgent });
 
-  window.webContents.session.setUserAgent(userAgent);
-
-  await window.loadURL('https://web.whatsapp.com/');
   return window;
 }
 
@@ -58,6 +57,7 @@ function setupWebSecurity(window: BrowserWindow) {
 
   window.webContents.session.webRequest.onBeforeSendHeaders((details, callback) => {
     details.requestHeaders['Accept-Language'] = locale;
+    details.requestHeaders['User-Agent'] = userAgent;
     callback({ cancel: false, requestHeaders: details.requestHeaders });
   });
 }

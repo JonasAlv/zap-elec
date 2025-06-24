@@ -27,6 +27,7 @@ export function createTray(window: BrowserWindow): Tray {
       click: () => {
         setThrottling(false);
         window.show();
+        window.focus();
       },
     },
     {
@@ -38,24 +39,18 @@ export function createTray(window: BrowserWindow): Tray {
     },
     {
       label: 'Quit',
-      click: () => app.quit(),
+      click: () => {
+        tray.destroy();
+        app.quit();
+      },
     },
   ]);
   tray.setContextMenu(contextMenu);
 
-  tray.setToolTip('App is running');
-
   tray.on('click', () => {
     setThrottling(false);
     window.show();
-  });
-
-  window.on('hide', () => {
-    tray.setToolTip('Hidden');
-  });
-
-  window.on('show', () => {
-    tray.setToolTip('App is running');
+    window.focus();
   });
 
   window.on('close', () => {
