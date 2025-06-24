@@ -6,7 +6,7 @@ export function createTray(window: BrowserWindow): Tray {
   const basePath = app.isPackaged
     ? process.resourcesPath           
     : path.resolve(__dirname, '../../');  
-  const iconPath = path.join(basePath, 'assets/icons/icon.png');
+  const iconPath = path.join(basePath, 'assets/icons/32x32.png');
 
   const trayIcon = nativeImage.createFromPath(iconPath);
 

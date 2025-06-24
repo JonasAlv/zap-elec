@@ -5,12 +5,12 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "yarn tsc && electron .",
-    "clean": "rm -r dist && rm -r release",
+"clean": "sudo rm -rf dist release node_modules",
     "tsc": "tsc",
     "build": "yarn run tsc && electron-builder",
     "docker-pull": "docker pull electronuserland/builder",
     "docker": "docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
-    "chown": "sudo chown -R me:me dist release"  
+    "chown": "sudo chown -R me:me dist release node_modules"  
   },
   "author": {
     "name": "Jonas Alv",
@@ -18,18 +18,18 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron": "^36.5.0",
-    "electron-builder": "^26.0.12",
-    "typescript": "^5.8.3"
+    "electron": "^37",
+    "electron-builder": "^26",
+    "typescript": "^5"
   },
   "build": {
     "asar": true,
   "appId": "com.zap-elec.app",
   "productName": "zap-elec",
 "files": [
-  "dist",
+  "dist/**",
   "!node_modules",
-  "assets"
+  "assets/icons/**"
 ],
  "extraResources": [
     {

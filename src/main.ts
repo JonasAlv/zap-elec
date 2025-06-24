@@ -3,12 +3,21 @@ import * as path from 'path';
 import { URL } from 'url';
 import { createTray } from './tray';
 
+// custom chromium commands
 //app.disableHardwareAcceleration();
-// app.commandLine.appendSwitch('enable-low-end-device-mode');
-
-app.commandLine.appendSwitch('gtk-version', '3');
+//app.commandLine.appendSwitch('enable-low-end-device-mode');
 //app.commandLine.appendSwitch('disable-gpu');
 //app.commandLine.appendSwitch('disable-software-rasterizer');
+app.commandLine.appendSwitch('enable-gpu');
+app.commandLine.appendSwitch('ignore-gpu-blacklist');
+//app.commandLine.appendSwitch('use-gl', 'desktop'); // Use native OpenGL
+// linux
+//due to error on gnome: using gtk4 and gtk3 at the same time
+app.commandLine.appendSwitch('gtk-version', '3'); 
+
+//app.commandLine.appendSwitch('ozone-platform', 'wayland');
+//app.commandLine.appendSwitch('enable-features', 'UseOzonePlatform,WaylandWindowDecorations');
+
 
 async function createMainWindow(): Promise<BrowserWindow> {
   const basePath = app.isPackaged
@@ -36,8 +45,8 @@ async function createMainWindow(): Promise<BrowserWindow> {
   });
 
   const userAgent =
-    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0';
-
+  'Mozilla/5.0 (X11; Linux x86_64; rv:139.0) Gecko/20100101 Firefox/139.0';
+  
   await window.loadURL('https://web.whatsapp.com/', { userAgent });
   return window;
 }
