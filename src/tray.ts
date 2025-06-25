@@ -45,6 +45,7 @@ export function createTray(window: BrowserWindow): Tray {
       },
     },
   ]);
+  
   tray.setContextMenu(contextMenu);
 
   tray.on('click', () => {
