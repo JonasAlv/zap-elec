@@ -1,19 +1,15 @@
 import { Tray, Menu, app, BrowserWindow, nativeImage } from 'electron';
 import path from 'path';
-import fs from 'fs';
+
 
 export function createTray(window: BrowserWindow): Tray {
   const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
   const iconPath = path.join(basePath, 'assets/icons/32x32.png');
-
-  if (!fs.existsSync(iconPath)) {
-    console.warn(`Tray icon not found at ${iconPath}`);
-  }
-
   const trayIcon = nativeImage.createFromPath(iconPath);
   const tray = new Tray(trayIcon);
 
   let isThrottled = false;
+
   function setThrottling(throttle: boolean) {
     if (isThrottled !== throttle) {
       window.webContents.setBackgroundThrottling(throttle);
@@ -45,7 +41,7 @@ export function createTray(window: BrowserWindow): Tray {
       },
     },
   ]);
-  
+
   tray.setContextMenu(contextMenu);
 
   tray.on('click', () => {
