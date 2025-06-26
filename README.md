@@ -1,6 +1,7 @@
 # zap-elec
 
-Simple and minimal whatsapp web wrapper made with Typescript and Electron
+Simple and minimal whatsapp web wrapper made with Typescript and Electron.
+Focused on minimal resources usage.
 
 ## Dev
 ```
