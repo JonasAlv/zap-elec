@@ -10,6 +10,7 @@
     "build": "yarn run tsc && electron-builder",
     "docker-pull": "docker pull electronuserland/builder",
     "docker": "docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
+    "docker-wine": "docker run --rm -it -v $PWD:/project -w /project electronuserland/builder:wine bash",
     "chown": "sudo chown -R me:me dist release node_modules"  
   },
   "author": {
@@ -48,6 +49,14 @@
     "synopsis": "Electron web wrapper"
  
   },
+ "win": {
+  "target": [
+    { "target": "nsis", "arch": ["x64"] },
+    { "target": "msi", "arch": ["x64"] }
+  ],
+  "icon": "assets/icons/icon.ico"
+},
+
 
   "publish": null
 
