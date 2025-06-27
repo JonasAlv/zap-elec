@@ -51,7 +51,6 @@ function setupWebSecurity(window: BrowserWindow) {
   });
 }
 
-
 function setupExternalNavigation(window: BrowserWindow) {
   window.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);
