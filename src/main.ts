@@ -23,5 +23,8 @@ function setupLifecycle() {
   });
 }
 
-app.whenReady().then(initializeApp);
-setupLifecycle();
+app.whenReady().then(async () => {
+  await initializeApp();
+  setupLifecycle();
+});
+

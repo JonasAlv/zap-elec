@@ -45,14 +45,25 @@ export function createTray(window: BrowserWindow): Tray {
   tray.setContextMenu(contextMenu);
 
   tray.on('click', () => {
+  if (window.isVisible()) {
+    setThrottling(true);
+    window.hide();
+  } else {
     setThrottling(false);
     window.show();
     window.focus();
-  });
+  }
+});
+
 
   window.on('close', () => {
     tray.destroy();
   });
+
+  app.on('before-quit', () => {
+    tray.destroy();
+  });
+
 
   return tray;
 }
