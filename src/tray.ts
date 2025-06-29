@@ -3,7 +3,7 @@ import path from 'path';
 
 export function createTray(window: BrowserWindow): Tray {
   const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
-  const iconPath = path.join(basePath, 'assets/icons/32x32.png');
+  const iconPath = path.join(basePath, 'assets/icons/tray_64x64.png');
   const trayIcon = nativeImage.createFromPath(iconPath);
   const tray = new Tray(trayIcon);
 
