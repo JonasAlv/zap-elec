@@ -9,3 +9,13 @@ git clone https://github.com/JonasAlv/zap-elec.git
 cd zap-elec
 yarn install
 ```
+
+## Archlinux AUR
+
+```
+paru -S zap-elec
+```
+
+```
+yay -S zap-elec
+```
