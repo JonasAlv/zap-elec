@@ -16,43 +16,59 @@ export function createTray(window: BrowserWindow): Tray {
     }
   }
 
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: 'Show',
-      click: () => {
-        setThrottling(false);
-        window.show();
-        window.focus();
-      },
+  function showWindow() {
+    setThrottling(false);
+    window.show();
+    window.focus();
+  }
+
+  function hideWindow() {
+    setThrottling(true);
+    window.hide();
+  }
+
+  function toggleWindow() {
+    if (window.isVisible()) {
+      hideWindow();
+    } else {
+      showWindow();
+    }
+    updateContextMenu();
+  }
+
+  function getToggleLabel() {
+    return window.isVisible() ? 'Hide' : 'Show';
+  }
+
+  const toggleMenuItem = {
+    label: getToggleLabel(),
+    click: toggleWindow,
+  };
+
+  const quitMenuItem = {
+    label: 'Quit',
+    click: () => {
+      tray.destroy();
+      app.quit();
     },
-    {
-      label: 'Hide',
-      click: () => {
-        setThrottling(true);
-        window.hide();
-      },
-    },
-    {
-      label: 'Quit',
-      click: () => {
-        tray.destroy();
-        app.quit();
-      },
-    },
-  ]);
+  };
+
+  let contextMenu = Menu.buildFromTemplate([toggleMenuItem, quitMenuItem]);
+
+  function updateContextMenu() {
+    toggleMenuItem.label = getToggleLabel();
+    contextMenu = Menu.buildFromTemplate([toggleMenuItem, quitMenuItem]);
+    tray.setContextMenu(contextMenu);
+  }
 
   tray.setContextMenu(contextMenu);
 
   tray.on('click', () => {
-    if (window.isVisible()) {
-      setThrottling(true);
-      window.hide();
-    } else {
-      setThrottling(false);
-      window.show();
-      window.focus();
-    }
+    toggleWindow();
   });
+
+  window.on('show', updateContextMenu);
+  window.on('hide', updateContextMenu);
 
   window.on('close', () => {
     tray.destroy();
