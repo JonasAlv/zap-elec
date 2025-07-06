@@ -5,12 +5,10 @@ import { URL } from 'url';
 const userAgent =
   'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36';
 
-function configureAppPerformance() {
-  app.commandLine.appendSwitch('js-flags', '--max-old-space-size=128');
-  app.commandLine.appendSwitch('disable-software-rasterizer');
-  app.commandLine.appendSwitch('enable-gpu');
-  app.commandLine.appendSwitch('disk-cache-size', '104857600');
-}
+app.commandLine.appendSwitch('js-flags', '--max-old-space-size=128');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+app.commandLine.appendSwitch('enable-gpu');
+app.commandLine.appendSwitch('disk-cache-size', '104857600');
 
 function createBrowserWindowIcon(): NativeImage {
   const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
@@ -43,7 +41,6 @@ function setupExternalNavigation(window: BrowserWindow) {
 }
 
 export async function createMainWindow(): Promise<BrowserWindow> {
-  configureAppPerformance();
 
   const icon = createBrowserWindowIcon();
 
