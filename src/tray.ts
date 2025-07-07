@@ -15,23 +15,26 @@ export function createTray(window: BrowserWindow): Tray {
       isThrottled = throttle;
     }
   }
+  // saved for future use
+  // function showWindow() {
+  //   setThrottling(false);
+  //   window.show();
+  //   window.focus();
+  // }
 
-  function showWindow() {
-    setThrottling(false);
-    window.show();
-    window.focus();
-  }
-
-  function hideWindow() {
-    setThrottling(true);
-    window.hide();
-  }
+  // function hideWindow() {
+  //   setThrottling(true);
+  //   window.hide();
+  // }
 
   function toggleWindow() {
     if (window.isVisible()) {
-      hideWindow();
+      window.hide();
+      setThrottling(true);
     } else {
-      showWindow();
+      window.show();
+      window.focus();
+      setThrottling(false);
     }
     updateContextMenu();
   }
@@ -48,7 +51,6 @@ export function createTray(window: BrowserWindow): Tray {
   const quitMenuItem = {
     label: 'Quit',
     click: () => {
-      tray.destroy();
       app.quit();
     },
   };
