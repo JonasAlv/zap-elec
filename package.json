@@ -8,10 +8,10 @@
 "clean": "sudo rm -rf dist release node_modules",
     "tsc": "tsc",
     "build": "yarn run tsc && electron-builder",
-    "docker-pull": "docker pull electronuserland/builder",
-    "docker": "docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
-    "docker-wine": "docker run --rm -it -v $PWD:/project -w /project electronuserland/builder:wine bash",
-    "chown": "sudo chown -R me:me dist release node_modules"  
+    "docker-pull": "sudo docker pull electronuserland/builder",
+    "docker": "sudo docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
+    "docker-wine": "sudo docker run --rm -it -v $PWD:/project -w /project electronuserland/builder:wine bash",
+    "chown": "sudo chown -R me:me dist release node_modules"
   },
   "author": {
     "name": "Jonas Alv",
@@ -19,7 +19,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "electron": "^37",
+    "electron": "^39",
     "electron-builder": "^26",
     "typescript": "^5"
   },
