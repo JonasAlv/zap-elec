@@ -9,32 +9,12 @@ export function createTray(window: BrowserWindow): Tray {
 
   let isThrottled = false;
 
-  function setThrottling(throttle: boolean) {
-    if (isThrottled !== throttle) {
-      window.webContents.setBackgroundThrottling(throttle);
-      isThrottled = throttle;
-    }
-  }
-  // saved for future use
-  // function showWindow() {
-  //   setThrottling(false);
-  //   window.show();
-  //   window.focus();
-  // }
-
-  // function hideWindow() {
-  //   setThrottling(true);
-  //   window.hide();
-  // }
-
   function toggleWindow() {
     if (window.isVisible()) {
       window.hide();
-      setThrottling(true);
     } else {
       window.show();
       window.focus();
-      setThrottling(false);
     }
     updateContextMenu();
   }
