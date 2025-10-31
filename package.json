@@ -5,7 +5,7 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "yarn tsc && electron .",
-"clean": "sudo rm -rf dist release node_modules",
+    "clean": "sudo rm -rf dist release node_modules",
     "tsc": "tsc",
     "build": "yarn run tsc && electron-builder",
     "docker-pull": "sudo docker pull electronuserland/builder",
@@ -21,44 +21,44 @@
   "devDependencies": {
     "electron": "^39",
     "electron-builder": "^26",
+    "electron-builder-squirrel-windows": "^26",
     "typescript": "^5"
   },
   "build": {
     "asar": true,
-  "appId": "com.zap-elec.app",
-  "productName": "zap-elec",
-"files": [
-  "dist/**",
-  "!node_modules",
-  "assets/icons/**"
-],
- "extraResources": [
-    {
-      "from": "assets/icons",
-      "to": "assets/icons"
-    }
-  ],
-  "directories": {
-    "output": "release"
-  },
-  "linux": {
-    "category": "Network",
-    "target": ["rpm", "deb"],
-    "icon": "assets/icons",
-    "maintainer": "Jonas Alv <jonas001san@gmail.com>",
-    "synopsis": "Electron web wrapper"
- 
-  },
- "win": {
-  "target": [
-    { "target": "nsis", "arch": ["x64"] },
-    { "target": "msi", "arch": ["x64"] }
-  ],
-  "icon": "assets/icons/icon.ico"
-},
-
-
-  "publish": null
-
+    "appId": "com.zap-elec.app",
+    "productName": "zap-elec",
+    "files": [
+      "dist/**",
+      "!node_modules",
+      "assets/icons/**"
+    ],
+    "extraResources": [
+      {
+        "from": "assets/icons",
+        "to": "assets/icons"
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "linux": {
+      "category": "Network",
+      "target": [
+        "rpm",
+        "deb"
+      ],
+      "icon": "assets/icons",
+      "maintainer": "Jonas Alv <jonas001san@gmail.com>",
+      "synopsis": "Electron web wrapper"
+    },
+    "win": {
+      "target": [
+        "nsis" 
+      ],
+      "icon": "assets/icons/icon.ico"
+    },
+    "publish": null
+  }
 }
-}
+
