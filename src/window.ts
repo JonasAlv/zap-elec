@@ -3,12 +3,17 @@ import path from 'path';
 import { URL } from 'url';
 
 const userAgent =
-  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36';
+  'Mozilla/5.0 (X11; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0';
 
-function createBrowserWindowIcon(): NativeImage {
+let cachedIcon: NativeImage | null = null;
+
+function getBrowserWindowIcon(): NativeImage {
+  if (cachedIcon) return cachedIcon;
+
   const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
   const iconPath = path.join(basePath, 'assets', 'icons', 'icon.png');
-  return nativeImage.createFromPath(iconPath);
+  cachedIcon = nativeImage.createFromPath(iconPath);
+  return cachedIcon;
 }
 
 function setupWebSecurity(window: BrowserWindow) {
@@ -36,13 +41,11 @@ function setupExternalNavigation(window: BrowserWindow) {
 }
 
 export async function createMainWindow(): Promise<BrowserWindow> {
-  const icon = createBrowserWindowIcon();
-
   const window = new BrowserWindow({
     width: 1200,
     height: 800,
-    icon,
-    show: false,
+    icon: getBrowserWindowIcon(),
+    show: false, 
     backgroundColor: '#ffffff',
     webPreferences: {
       contextIsolation: true,
@@ -58,10 +61,10 @@ export async function createMainWindow(): Promise<BrowserWindow> {
     window.show();
   });
 
-  await window.loadURL('https://web.whatsapp.com/', { userAgent });
-
   setupWebSecurity(window);
   setupExternalNavigation(window);
+
+  await window.loadURL('https://web.whatsapp.com/', { userAgent });
 
   return window;
 }

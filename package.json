@@ -43,14 +43,22 @@
       "output": "release"
     },
     "linux": {
+      "executableName": "whatsapp",
       "category": "Network",
       "target": [
         "rpm",
-        "deb"
+        "deb",
+        "pacman"
       ],
       "icon": "assets/icons",
       "maintainer": "Jonas Alv <jonas001san@gmail.com>",
-      "synopsis": "Electron web wrapper"
+      "synopsis": "Electron web wrapper",
+      "desktop": {
+        "entry": {
+          "Icon": "whatsapp",
+          "StartupWMClass": "whatsapp"
+        }
+      }
     },
     "win": {
       "target": [
@@ -61,4 +69,3 @@
     "publish": null
   }
 }
-
