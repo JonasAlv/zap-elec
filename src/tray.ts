@@ -10,7 +10,7 @@ const IGNORED_FOLDERS = new Set([
     'devices', 'actions', 'categories', 'emblems', 'animations'
 ]);
 
-function safeExec(command: string): string {
+function safeBashExec(command: string): string {
   try {
     return execSync(command, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
   } catch (e: any) {
@@ -19,7 +19,7 @@ function safeExec(command: string): string {
   }
 }
 
-function safeExecBuffer(command: string): Buffer {
+function safeBashExecBuffer(command: string): Buffer {
   try {
     return execSync(command, { stdio: ['ignore', 'pipe', 'ignore'] });
   } catch (e: any) {
@@ -33,10 +33,10 @@ function getLinuxIconTheme(): string {
 
   // KDE Detection
   if (process.env.XDG_CURRENT_DESKTOP?.toUpperCase().includes('KDE')) {
-    const theme6 = safeExec('kreadconfig6 --group Icons --key Theme');
+    const theme6 = safeBashExec('kreadconfig6 --group Icons --key Theme');
     if (theme6) return theme6;
 
-    const theme5 = safeExec('kreadconfig5 --group Icons --key Theme');
+    const theme5 = safeBashExec('kreadconfig5 --group Icons --key Theme');
     if (theme5) return theme5;
 
     try {
@@ -52,7 +52,7 @@ function getLinuxIconTheme(): string {
   }
 
   // GNOME Detection
-  const gtkTheme = safeExec('gsettings get org.gnome.desktop.interface icon-theme').replace(/'/g, '');
+  const gtkTheme = safeBashExec('gsettings get org.gnome.desktop.interface icon-theme').replace(/'/g, '');
   if (gtkTheme) return gtkTheme;
 
   if (process.env.GTK_THEME) return process.env.GTK_THEME;
@@ -139,7 +139,7 @@ function resolveSystemIconPath(theme: string): string | null {
 export function createTray(window: BrowserWindow): Tray {
   const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
   
-  let iconPath = path.join(basePath, 'assets/icons/whatsapp-tray.svg');
+  let iconPath = path.join(basePath, 'assets/icons/icon.png');
   let currentThemeName = '';
 
   const updateTrayIcon = () => {
@@ -158,7 +158,7 @@ export function createTray(window: BrowserWindow): Tray {
         let trayImage = nativeImage.createFromPath(newIconPath);
 
         if (trayImage.isEmpty() && newIconPath.endsWith('.svg')) {
-            const pngBuffer = safeExecBuffer(`rsvg-convert -w 22 -h 22 "${newIconPath}"`);
+            const pngBuffer = safeBashExecBuffer(`rsvg-convert -w 22 -h 22 "${newIconPath}"`);
             if (pngBuffer.length > 0) {
                 trayImage = nativeImage.createFromBuffer(pngBuffer);
             }
