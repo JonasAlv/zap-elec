@@ -2,10 +2,15 @@ import { BrowserWindow, shell, nativeImage, NativeImage, app } from 'electron';
 import path from 'path';
 import { URL } from 'url';
 
-const userAgent =
-  'Mozilla/5.0 (X11; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0';
+const userAgent = 'Mozilla/5.0 (X11; Linux x86_64; rv:145.0) Gecko/20100101 Firefox/145.0';
 
 let cachedIcon: NativeImage | null = null;
+
+let isQuitting = false;
+
+app.on('before-quit', () => {
+  isQuitting = true;
+});
 
 function getBrowserWindowIcon(): NativeImage {
   if (cachedIcon) return cachedIcon;
@@ -59,6 +64,15 @@ export async function createMainWindow(): Promise<BrowserWindow> {
 
   window.once('ready-to-show', () => {
     window.show();
+  });
+
+  window.on('close', (event) => {
+
+    if (!isQuitting) {
+      event.preventDefault(); 
+      window.hide();          
+    }
+    return false;
   });
 
   setupWebSecurity(window);

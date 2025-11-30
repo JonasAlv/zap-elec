@@ -5,19 +5,19 @@
   "main": "dist/main.js",
   "scripts": {
     "start": "yarn tsc && electron .",
-    "clean": "sudo rm -rf dist release node_modules",
+    "clean": "rm -rf dist release node_modules",
     "tsc": "tsc",
     "build": "yarn run tsc && electron-builder",
     "docker-pull": "sudo docker pull electronuserland/builder",
     "docker": "sudo docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
     "docker-wine": "sudo docker run --rm -it -v $PWD:/project -w /project electronuserland/builder:wine bash",
-    "chown": "sudo chown -R me:me dist release node_modules"
+    "chown": "sudo chown -R $USER:$USER dist release node_modules"
   },
   "author": {
-    "name": "Jonas Alv",
-    "email": "jonas001san@gmail.com"
+    "name": "Jonas Alves",
+    "email": "zeropior@proton.me"
   },
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "devDependencies": {
     "electron": "^39",
     "electron-builder": "^26",
@@ -26,12 +26,14 @@
   },
   "build": {
     "asar": true,
+    "compression": "maximum",
     "appId": "com.zap-elec.app",
     "productName": "zap-elec",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
     "files": [
-      "dist/**",
+      "dist/**/*",
       "!node_modules",
-      "assets/icons/**"
+      "assets/icons/**/*"
     ],
     "extraResources": [
       {
@@ -51,7 +53,7 @@
         "pacman"
       ],
       "icon": "assets/icons",
-      "maintainer": "Jonas Alv <jonas001san@gmail.com>",
+      "maintainer": "Jonas Alves <zeropior@proton.me>",
       "synopsis": "Electron web wrapper",
       "desktop": {
         "entry": {
