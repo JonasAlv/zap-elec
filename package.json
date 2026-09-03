@@ -1,6 +1,7 @@
 {
   "name": "zap-elec",
   "version": "1.0.0",
+  "desktopName": "whatsapp",
   "description": "Simple web wrapper made with typescript and electron",
   "main": "dist/main.js",
   "scripts": {
@@ -55,6 +56,7 @@
       "icon": "assets/icons",
       "maintainer": "Jonas Alves <zeropior@proton.me>",
       "synopsis": "Electron web wrapper",
+      "syncDesktopName": true,
       "desktop": {
         "entry": {
           "Icon": "whatsapp",
