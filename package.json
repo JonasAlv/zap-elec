@@ -1,0 +1,73 @@
+{
+  "name": "zap-elec",
+  "version": "1.0.0",
+  "description": "Simple web wrapper made with typescript and electron",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "yarn tsc && electron .",
+    "clean": "rm -rf dist release node_modules",
+    "tsc": "tsc",
+    "build": "yarn run tsc && electron-builder",
+    "docker-pull": "sudo docker pull electronuserland/builder",
+    "docker": "sudo docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
+    "docker-wine": "sudo docker run --rm -it -v $PWD:/project -w /project electronuserland/builder:wine bash",
+    "chown": "sudo chown -R $USER:$USER dist release node_modules"
+  },
+  "author": {
+    "name": "Jonas Alves",
+    "email": "zeropior@proton.me"
+  },
+  "license": "GPL-3.0-only",
+  "devDependencies": {
+    "electron": "^44",
+    "electron-builder": "^26",
+    "electron-builder-squirrel-windows": "^26",
+    "typescript": "^7"
+  },
+  "build": {
+    "asar": true,
+    "compression": "maximum",
+    "appId": "com.zap-elec.app",
+    "productName": "zap-elec",
+    "artifactName": "${productName}-${version}-${arch}.${ext}",
+    "files": [
+      "dist/**/*",
+      "!node_modules",
+      "assets/icons/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "assets/icons",
+        "to": "assets/icons"
+      }
+    ],
+    "directories": {
+      "output": "release"
+    },
+    "linux": {
+      "executableName": "whatsapp",
+      "category": "Network",
+      "target": [
+        "rpm",
+        "deb",
+        "pacman"
+      ],
+      "icon": "assets/icons",
+      "maintainer": "Jonas Alves <zeropior@proton.me>",
+      "synopsis": "Electron web wrapper",
+      "desktop": {
+        "entry": {
+          "Icon": "whatsapp",
+          "StartupWMClass": "whatsapp"
+        }
+      }
+    },
+    "win": {
+      "target": [
+        "nsis" 
+      ],
+      "icon": "assets/icons/icon.ico"
+    },
+    "publish": null
+  }
+}
