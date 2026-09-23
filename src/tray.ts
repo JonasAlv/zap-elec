@@ -1,25 +1,37 @@
 import { Tray, Menu, app, BrowserWindow, nativeImage } from 'electron';
 import path from 'path';
+import fs from 'fs';
 
 export function createTray(window: BrowserWindow): Tray {
   const basePath = app.isPackaged ? process.resourcesPath : app.getAppPath();
-  
-  let iconPath = path.join(basePath, 'assets/icons/icon.png');
-  let trayImage = nativeImage.createFromPath(iconPath).resize({ width: 22, height: 22 });
-  
+  const iconFile = process.platform === 'win32' ? 'icon.ico' : 'icon.png';
+  let iconPath = path.join(basePath, 'assets', 'icons', iconFile);
+
+  if (!fs.existsSync(iconPath)) {
+    iconPath = path.join(basePath, 'assets', 'icons', 'icon.png');
+  }
+
+  const trayImage = nativeImage.createFromPath(iconPath).resize({ width: 22, height: 22 });
   const tray = new Tray(trayImage);
 
+  tray.setToolTip('zap-elec - WhatsApp Web');
+
+  function isWindowShown(): boolean {
+    return window.isVisible() && !window.isMinimized();
+  }
+
   function toggleWindow() {
-    if (window.isVisible()) {
+    if (isWindowShown()) {
       window.hide();
     } else {
+      if (window.isMinimized()) window.restore();
       window.show();
       window.focus();
     }
   }
 
   function getToggleLabel() {
-    return window.isVisible() ? 'Hide' : 'Show';
+    return isWindowShown() ? 'Hide' : 'Show';
   }
 
   const toggleMenuItem = {
@@ -30,7 +42,7 @@ export function createTray(window: BrowserWindow): Tray {
   const quitMenuItem = {
     label: 'Quit',
     click: () => {
-      app.quit(); 
+      app.quit();
     },
   };
 
@@ -50,6 +62,8 @@ export function createTray(window: BrowserWindow): Tray {
 
   window.on('show', updateContextMenu);
   window.on('hide', updateContextMenu);
+  window.on('minimize', updateContextMenu);
+  window.on('restore', updateContextMenu);
 
   app.on('before-quit', () => {
     tray.destroy();

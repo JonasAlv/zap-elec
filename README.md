@@ -1,39 +1,46 @@
 # zap-elec
 
-Simple and minimal whatsapp web wrapper made with Typescript and Electron.
+Simple and minimal whatsapp web wrapper made with TypeScript and Electron.
 Focused on minimal resources usage.
 
 ## Dev
 
-```
+```bash
 git clone https://github.com/JonasAlv/zap-elec.git
 cd zap-elec
-yarn install
+pnpm install
+pnpm start
 ```
 
-Note: check the `Script` section in `package.json` file to see build scripts.
-steps to build:
-```
-yarn docker-pull
-yarn docker
-yarn install
-yarn build --linux
-```
-for now windows building is not working on linux, but
-if you are on windows you can build for windows without docker:
-```
-yarn install
-yarn build --win
-```
+## Build
 
+You can build packages locally using pnpm:
 
-## install
-It's on the AUR for arch linux users
-```
+- **All Linux packages** (`deb`, `rpm`, `pacman`):
+  ```bash
+  pnpm build:linux
+  ```
+- **Individual Linux packages**:
+  ```bash
+  pnpm build:deb
+  pnpm build:rpm
+  pnpm build:pacman
+  ```
+- **Windows MSI installer**:
+  ```bash
+  pnpm build:msi
+  # or
+  pnpm build:win
+  ```
+
+Built packages are located in the `release/` directory.
+
+## Install
+It's on the AUR for Arch Linux users:
+```bash
 paru -S zap-elec
 ```
-
-```
+```bash
 yay -S zap-elec
 ```
-For other systems you can go to the [Releases page](https://github.com/JonasAlv/zap-elec/releases) and download the desired format.
+For other systems, download the desired package format from the [Releases page](https://github.com/JonasAlv/zap-elec/releases).

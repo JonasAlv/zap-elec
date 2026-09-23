@@ -227,12 +227,12 @@ function setupThemeWatcher() {
         });
     }
   }
-  }
-  //----- LINUX THEMING SECTION END-----//
+}
+//----- LINUX THEMING SECTION END-----//
 
 async function initializeApp() {
   if (process.platform === 'linux') {
-    (app as any).setDesktopName('whatsapp.desktop');
+    app.setDesktopName('whatsapp.desktop');
   }
 
   mainWindow = await createMainWindow();

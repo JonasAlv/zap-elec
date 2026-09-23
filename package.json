@@ -5,14 +5,16 @@
   "description": "Simple web wrapper made with typescript and electron",
   "main": "dist/main.js",
   "scripts": {
-    "start": "yarn tsc && electron .",
+    "start": "tsc && electron .",
     "clean": "rm -rf dist release node_modules",
     "tsc": "tsc",
-    "build": "yarn run tsc && electron-builder",
-    "docker-pull": "sudo docker pull electronuserland/builder",
-    "docker": "sudo docker run --rm -it -v $PWD:/project -w /project electronuserland/builder bash",
-    "docker-wine": "sudo docker run --rm -it -v $PWD:/project -w /project electronuserland/builder:wine bash",
-    "chown": "sudo chown -R $USER:$USER dist release node_modules"
+    "build": "tsc && electron-builder",
+    "build:linux": "tsc && electron-builder --linux",
+    "build:deb": "tsc && electron-builder --linux deb",
+    "build:rpm": "tsc && electron-builder --linux rpm",
+    "build:pacman": "tsc && electron-builder --linux pacman",
+    "build:win": "tsc && electron-builder --win",
+    "build:msi": "tsc && electron-builder --win msi"
   },
   "author": {
     "name": "Jonas Alves",
@@ -20,10 +22,10 @@
   },
   "license": "GPL-3.0-only",
   "devDependencies": {
-    "electron": "^44",
-    "electron-builder": "^26",
-    "electron-builder-squirrel-windows": "^26",
-    "typescript": "^7"
+    "@types/node": "^26.6.2",
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3",
+    "typescript": "^7.0.2"
   },
   "build": {
     "asar": true,
@@ -49,8 +51,8 @@
       "executableName": "whatsapp",
       "category": "Network",
       "target": [
-        "rpm",
         "deb",
+        "rpm",
         "pacman"
       ],
       "icon": "assets/icons",
@@ -66,7 +68,7 @@
     },
     "win": {
       "target": [
-        "nsis" 
+        "msi"
       ],
       "icon": "assets/icons/icon.ico"
     },
