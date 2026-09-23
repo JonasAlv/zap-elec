@@ -14,7 +14,7 @@
     "build:rpm": "tsc && electron-builder --linux rpm",
     "build:pacman": "tsc && electron-builder --linux pacman",
     "build:win": "tsc && electron-builder --win",
-    "build:msi": "tsc && electron-builder --win msi"
+    "build:exe": "tsc && electron-builder --win nsis"
   },
   "author": {
     "name": "Jonas Alves",
@@ -68,7 +68,7 @@
     },
     "win": {
       "target": [
-        "msi"
+        "nsis"
       ],
       "icon": "assets/icons/icon.ico"
     },

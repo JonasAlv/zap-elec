@@ -26,9 +26,9 @@ You can build packages locally using pnpm:
   pnpm build:rpm
   pnpm build:pacman
   ```
-- **Windows MSI installer**:
+- **Windows EXE installer**:
   ```bash
-  pnpm build:msi
+  pnpm build:exe
   # or
   pnpm build:win
   ```
